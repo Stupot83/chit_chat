@@ -43,4 +43,47 @@ routes.post('/create-account', (req, res, next) => {
   }
 });
 
+routes.get('/sign-in', (req, res) => {
+  res.render('sign-in.html');
+});
+
+routes.post('/sign-in', (req, res, next) => {
+  var form = req.body;
+
+  var searchObject = {
+    email: form.email
+  };
+
+  DataAccess.findOne(User, searchObject, res, next, (user) => {
+
+    if (user) {
+      console.log({
+        form,
+        user
+      });
+      if (bcrypt.compareSync(form.password, user.password_hash)) {
+        res.cookie('userId', user.id);
+        res.redirect('/user');
+      } else {
+
+        res.render('sign-in.html', {
+          errorMessage: 'Email address and password do not match'
+        });
+      }
+    } else {
+
+      res.render('sign-in.html', {
+        errorMessage: 'No user with that email exists'
+      });
+    }
+  });
+});
+
+routes.get('/sign-out', (req, res) => {
+
+  res.clearCookie('userId');
+
+  res.redirect('/sign-in');
+});
+
 module.exports = routes;

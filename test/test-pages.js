@@ -12,7 +12,23 @@ describe('Status and content', () => {
 
       it('content', done => {
         request('http://localhost:9000/create-account' , (error, response, body) => {
-            expect(body).to.include("Chit Chat");
+            expect(body).to.include("Create Account");
+            done();
+        });
+      });
+    });
+
+  describe ('Sign in page', () => {
+      it('status', done => {
+          request('http://localhost:9000/sign-in', (error, response, body) => {
+              expect(response.statusCode).to.equal(200);
+              done();
+          });
+      });
+  
+      it('content', done => {
+        request('http://localhost:9000/sign-in' , (error, response, body) => {
+            expect(body).to.include("Sign In");
             done();
         });
     });
