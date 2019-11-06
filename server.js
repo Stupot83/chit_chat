@@ -6,8 +6,10 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mustacheExpress = require('mustache-express');
 const expressHandlebars = require('express-handlebars');
+const hbs = require('hbs');
 const port = process.env.PORT || 9000;
 const app = express();
+const routes = require('./routes');
 
 app.use(morgan('dev'));
 
@@ -21,9 +23,10 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static('public'));
 
-app.engine('html', expressHandlebars());
+app.set('view engine', 'html');
+app.engine('html', require('hbs').__express);
 
-app.set('view engine', 'handlebars');
+app.use(routes);
 
 mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
