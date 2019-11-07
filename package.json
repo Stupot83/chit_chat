@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "nodemon --ext js,html,css server.js",
     "start": "node server.js",
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha",
+    "cypress:open": "cypress open"
   },
   "author": "Stuart Priestley",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "tailwind": "^4.0.0"
   },
   "devDependencies": {
+    "cypress": "^3.6.0",
     "request": "^2.88.0"
   }
 }
