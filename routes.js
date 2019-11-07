@@ -259,4 +259,76 @@ routes.get('/members/:id/unfollow', (req, res, next) => {
   });
 });
 
+routes.get('/friends', (req, res, next) => {
+
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+
+    var followingSearchObject = {
+      followerId: req.cookies.userId
+    };
+
+    DataAccess.find(Following, followingSearchObject, res, next, (peopleUserIsFollowing) => {
+
+      var userIdsToFind = [];
+
+      peopleUserIsFollowing.forEach((person) => {
+        userIdsToFind.push(person.followingId);
+      });
+
+      var usersFollowingSearchObject = {
+        _id: {
+          $in: userIdsToFind
+        }
+      };
+
+      DataAccess.find(User, usersFollowingSearchObject, res, next, (following) => {
+
+        var followedSearchObject = {
+          followingId: req.cookies.userId
+        };
+
+        DataAccess.find(Following, followedSearchObject, res, next, (peopleFollowingUser) => {
+
+          var followIdsToFind = [];
+
+          peopleFollowingUser.forEach((follow) => {
+            followIdsToFind.push(follow.followerId);
+          });
+
+          var followedUserSearchObject = {
+            _id: {
+              $in: followIdsToFind
+            }
+          };
+
+          DataAccess.find(User, followedUserSearchObject, res, next, (followed) => {
+
+            following.sort((a, b) => {
+              var nameA = a.name.toUpperCase();
+              var nameB = b.name.toUpperCase();
+              return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+            });
+
+            followed.sort((a, b) => {
+              var nameA = a.name.toUpperCase();
+              var nameB = b.name.toUpperCase();
+              return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+            });
+
+            res.render('friends.html', {
+              user: loggedInUser,
+              following: following,
+              followed: followed
+            });
+          });
+        });
+      });
+    });
+  });
+});
+
 module.exports = routes;

@@ -114,6 +114,22 @@ describe('Status and content', () => {
     });
   });
 
+  describe ('The Friends page', () => {
+    it('status', done => {
+        request('http://localhost:9000/friends', (error, response, body) => {
+            expect(response.statusCode).to.equal(200);
+            done();
+        });
+    });
+
+   it('content', done => {
+      request('http://localhost:9000/friends' , (error, response, body) => {
+          expect(body).to.include("Friends");
+          done();
+      });
+    });
+  });
+
   describe ('Non existent page', () => {
       it('status', done => {
           request('http://localhost:9000/dave', (error, response, body) => {
