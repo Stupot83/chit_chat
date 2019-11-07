@@ -99,7 +99,6 @@ routes.get('/user', (req, res, next) => {
   });
 });
 
-// show the edit account form 
 routes.get('/edit-account', (req, res, next) => {
   var userSearchObject = {
     _id: req.cookies.userId
@@ -154,6 +153,18 @@ routes.post('/edit-account', (req, res, next) => {
         });
       }
     });
+  });
+});
+
+routes.get('/delete-account', (req, res, next) => {
+
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.deleteOne(User, userSearchObject, res, next, () => {
+    res.clearCookie('userId');
+    res.redirect('/sign-in');
   });
 });
 
