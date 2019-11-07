@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Chit Chat</title>
+
+  <!-- Tailwind.css is a CSS library. Read the docs here: -->
+  <!-- https://tailwindcss.com/docs/what-is-tailwind -->
+  <link rel="stylesheet" href="/tailwind.css" />
+</head>
+
+<body class="bg-black">
+  <header class="fixed pin-x pin-t bg-black text-white">
+    <div class="mx-auto h-16 p-4 flex items-center justify-between" style="width: 1000px">
+      <h2 class="mt-8 pl-2 pr-2 pt-4 pb-4 uppercase bg-blue-darker border border-white">Chit Chat - Profile</h2>
+      <div class="mt-8">
+        Signed in as {{ user.name }} ({{ user.email }})
+        <a href="/sign-out" class="text-white bg-grey-darkest border border-white rounded p-2 no-underline hover:bg-black ml-4">
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="width: 1000px; height: auto;" class="mx-auto mt-16 pt-4 flex flex-col justify-center ">
+    <section class="border border-grey-light border-l-0 border-r-0 border-b-0 mt-6 pt-6"></section>
+
+    <section class="flex items-center pt-6">
+      <div class="m-4 pl-6 pr-6 pt-12 pb-12 rounded-lg bg-green-dark flex-1 shadow flex flex-col-reverse">
+        <a class="button no-underline rounded-full bg-transparent hover:bg-green" href="/chits">
+          <h3 class="mt-6 mb-6 uppercase text-lg text-white text-center font-semibold">
+            Your Chits
+          </h3>
+        </a>
+      </div>
+
+      <div class="m-4 pl-6 pr-6 pt-12 pb-12 rounded-lg bg-orange-dark flex-1 shadow flex flex-col-reverse">
+        <a class="button no-underline rounded-full bg-transparent hover:bg-orange" href="/members">
+          <h3 class="mt-6 mb-6 uppercase text-lg text-white text-center font-semibold">
+            Chit Chat Members
+          </h3>
+        </a>
+      </div>
+
+      <div class="m-4 pl-6 pr-6 pt-12 pb-12 rounded-lg bg-indigo flex-1 shadow flex flex-col-reverse">
+        <a class="button no-underline rounded-full bg-transparent hover:bg-indigo-light" href="/friends">
+          <h3 class="mt-6 mb-6 uppercase text-lg text-white text-center font-semibold">
+            Chit Chat Friends
+          </h3>
+        </a>
+      </div>
+    </section>
+
+    <section class="flex items-center pt-6 pb-6">
+        <div class="m-4 pl-6 pr-6 pt-12 pb-12 rounded-lg bg-blue flex-1 shadow flex flex-col-reverse">
+            <a class="button no-underline rounded-full bg-transparent hover:bg-blue-light" href="/feed">
+              <h3 class="mt-6 mb-6 uppercase text-lg text-white text-center font-semibold">
+                Chit Chat Feed
+              </h3>
+            </a>
+          </div>
+
+        <img class="pl-10 pr-10 flex-1" style="height: 300px; width: 300px; margin: auto;" alt="logo" src="/chit_chat.png"></img>
+
+        <div class="m-4 pl-6 pr-6 pt-12 pb-12 rounded-lg bg-red flex-1 shadow flex flex-col-reverse">
+            <a class="button no-underline rounded-full bg-transparent hover:bg-red-light" href="/edit-account">
+              <h3 class="mt-6 mb-6 uppercase text-lg text-white text-center font-semibold">
+                Chit Chat Account
+              </h3>
+            </a>
+          </div>
+    </section>
+
+    <section class="border border-grey-light border-l-0 border-r-0 border-b-0 mt-6 pt-6"></section>
+  </main>
+</body>
+
+</html>

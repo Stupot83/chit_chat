@@ -86,4 +86,17 @@ routes.get('/sign-out', (req, res) => {
   res.redirect('/sign-in');
 });
 
+routes.get('/user', (req, res, next) => {
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+
+    res.render('user.html', {
+      user: loggedInUser,
+    });
+  });
+});
+
 module.exports = routes;
