@@ -331,4 +331,23 @@ routes.get('/friends', (req, res, next) => {
   });
 });
 
+routes.get('/friends/:id/unfollow', (req, res, next) => {
+
+  var searchObject = {
+    _id: req.params.id
+  };
+
+  DataAccess.findOne(User, searchObject, res, next, (userFollowed) => {
+
+    var unfollowSearchObject = {
+      followingId: userFollowed.id,
+      followerId: req.cookies.userId
+    };
+
+    DataAccess.deleteOne(Following, unfollowSearchObject, res, next, () => {
+      res.redirect('/friends');
+    });
+  });
+});
+
 module.exports = routes;
