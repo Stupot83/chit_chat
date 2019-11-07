@@ -99,4 +99,62 @@ routes.get('/user', (req, res, next) => {
   });
 });
 
+// show the edit account form 
+routes.get('/edit-account', (req, res, next) => {
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+
+    res.render('edit-account.html', {
+      user: loggedInUser,
+    });
+  });
+});
+
+routes.post('/edit-account', (req, res, next) => {
+
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+
+    var searchObject = {
+      _id: req.cookies.userId
+    };
+
+    DataAccess.findOneAndModify(User, searchObject, res, next, (user) => {
+
+      var form = req.body;
+      var passwordHash = bcrypt.hashSync(form.password, saltRounds);
+
+      user.name = form.name;
+      user.email = form.email;
+      user.password_hash = passwordHash;
+
+      if (form.password !== form.passwordConfirm) {
+        res.render('edit-account.html', {
+          user: loggedInUser,
+          name: user.name,
+          email: user.email,
+          errorMessage: 'Password does not match'
+        });
+      } else {
+
+        DataAccess.updateExisting(User, user, res, next, () => {
+          res.cookie('userId', user.id);
+          res.redirect('/user');
+        }, err => {
+          res.render('edit-account.html', {
+            user: loggedInUser,
+            errorMessage: 'A user already exists with those details'
+          });
+        });
+      }
+    });
+  });
+});
+
 module.exports = routes;

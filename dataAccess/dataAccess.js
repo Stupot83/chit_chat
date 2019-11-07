@@ -30,3 +30,24 @@ module.exports.findOne = (model, searchObject, res, next, callback) => {
       }
   });
 };
+
+module.exports.findOneAndModify = (model, searchObject, res, next, callback) => {
+  model.findOne(searchObject, (err, data) => {
+      if (err) {
+          next(err);
+      } else {
+          callback(data);
+      }
+  });
+};
+
+module.exports.updateExisting = (mongooseObject, model, res, next, updateCallback, errorCallback) => {
+  const callback = err => {
+      if (err) {
+          errorCallback(err);
+      } else {
+          updateCallback();
+      }
+  };
+  mongooseObject.findByIdAndUpdate(model._id, model, callback);
+};
