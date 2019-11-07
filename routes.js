@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const routes = new express.Router();
 const saltRounds = 10;
 const User = require('./models/User');
+const Following = require('./models/Following');
 const DataAccess = require('./dataAccess/dataAccess');
 
 routes.get('/', (req, res) => {
@@ -165,6 +166,66 @@ routes.get('/delete-account', (req, res, next) => {
   DataAccess.deleteOne(User, userSearchObject, res, next, () => {
     res.clearCookie('userId');
     res.redirect('/sign-in');
+  });
+});
+
+routes.get('/members', (req, res, next) => {
+
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+
+    var followingSearchObject = {
+      followerId: req.cookies.userId
+    };
+
+    DataAccess.find(Following, followingSearchObject, res, next, (peopleUserIsFollowing) => {
+
+      var userIdsToFind = [];
+
+      peopleUserIsFollowing.forEach((person) => {
+        userIdsToFind.push(person.followingId);
+      });
+
+      var usersFollowingSearchObject = {
+        _id: {
+          $ne: req.cookies.userId,
+          $nin: userIdsToFind
+        }
+      };
+
+      DataAccess.find(User, usersFollowingSearchObject, res, next, (members) => {
+
+        var followedAlreadySearchObject = {
+          _id: {
+            $in: userIdsToFind
+          }
+        };
+
+        DataAccess.find(User, followedAlreadySearchObject, res, next, (following) => {
+
+          members.sort((a, b) => {
+            var nameA = a.name.toUpperCase();
+            var nameB = b.name.toUpperCase();
+            return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+          });
+
+          following.sort((a, b) => {
+            var nameA = a.name.toUpperCase();
+            var nameB = b.name.toUpperCase();
+            return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+          });
+
+          res.render('members.html', {
+            user: loggedInUser,
+            members: members,
+            following: following
+          });
+        });
+      });
+    });
   });
 });
 
