@@ -229,4 +229,34 @@ routes.get('/members', (req, res, next) => {
   });
 });
 
+routes.get('/members/:id/follow', (req, res, next) => {
+
+  var following = new Following();
+  following.followingId = req.params.id;
+  following.followerId = req.cookies.userId;
+
+  DataAccess.insertNew(following, res, next, () => {
+    res.redirect('/members');
+  });
+});
+
+routes.get('/members/:id/unfollow', (req, res, next) => {
+
+  var searchObject = {
+    _id: req.params.id
+  };
+
+  DataAccess.findOne(User, searchObject, res, next, (userFollowed) => {
+
+    var unfollowSearchObject = {
+      followingId: userFollowed.id,
+      followerId: req.cookies.userId
+    };
+
+    DataAccess.deleteOne(Following, unfollowSearchObject, res, next, () => {
+      res.redirect('/members');
+    });
+  });
+});
+
 module.exports = routes;
