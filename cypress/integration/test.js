@@ -8,6 +8,10 @@ describe('Navigating around the app', () => {
     cy.visit("http://localhost:9000/sign-in");
     
     cy
+      .get('input[name="userName"]')
+      .type(this.admin.userName)
+      .should("have.value", this.admin.userName);
+    cy
       .get('input[name="email"]')
       .type(this.admin.email)
       .should("have.value", this.admin.email);

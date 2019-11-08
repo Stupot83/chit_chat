@@ -24,12 +24,14 @@ routes.post('/create-account', (req, res, next) => {
   var passwordHash = bcrypt.hashSync(form.password, saltRounds);
   var user = new User();
   user.name = form.name;
+  user.userName = form.userName;
   user.email = form.email;
   user.password_hash = passwordHash;
 
   if (form.password !== form.passwordConfirm) {
     res.render('create-account.html', {
       name: user.name,
+      userName: user.userName,
       email: user.email,
       errorMessage: 'Password does not match'
     });
@@ -53,6 +55,7 @@ routes.post('/sign-in', (req, res, next) => {
   var form = req.body;
 
   var searchObject = {
+    userName: form.userName,
     email: form.email
   };
 
@@ -69,13 +72,13 @@ routes.post('/sign-in', (req, res, next) => {
       } else {
 
         res.render('sign-in.html', {
-          errorMessage: 'Email address and password do not match'
+          errorMessage: 'Password is incorrect'
         });
       }
     } else {
 
       res.render('sign-in.html', {
-        errorMessage: 'No user with that email exists'
+        errorMessage: 'No user with that email address or userName exists'
       });
     }
   });
@@ -132,6 +135,7 @@ routes.post('/edit-account', (req, res, next) => {
       var passwordHash = bcrypt.hashSync(form.password, saltRounds);
 
       user.name = form.name;
+      user.userName = form.userName;
       user.email = form.email;
       user.password_hash = passwordHash;
 
@@ -139,6 +143,7 @@ routes.post('/edit-account', (req, res, next) => {
         res.render('edit-account.html', {
           user: loggedInUser,
           name: user.name,
+          userName: user.userName,
           email: user.email,
           errorMessage: 'Password does not match'
         });
@@ -394,12 +399,12 @@ routes.post('/chits/new', (req, res, next) => {
 
   DataAccess.findOne(User, searchObject, res, next, (loggedInUser) => {
     userId = loggedInUser._id;
-    userName = loggedInUser.name;
+    name = loggedInUser.name;
 
     var chit = new Chit();
     chit.title = form.title;
     chit.text = form.text;
-    chit.userName = userName;
+    chit.name = name;
     chit.userId = userId;
 
     DataAccess.insertNew(chit, res, next, () => {

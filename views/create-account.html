@@ -24,24 +24,30 @@
       <div class="bg-red-lightest text-red-dark p-4">{{ errorMessage }}</div>
       {{/if}}
 
-      <label class="m-4 p-2 block">
+      <label class="p-2 block">
         Name
         <input class="block rounded bg-grey-lightest p-2 mt-2 w-full" type="text" name="name" value="{{ name }}"
           required />
       </label>
 
-      <label class="m-4 p-2 block">
+      <label class="p-2 block">
+        userName
+        <input class="block rounded bg-grey-lightest p-2 mt-2 w-full" type="text" name="userName" value="{{ userName }}"
+          required />
+      </label>
+
+      <label class="p-2 block">
         Email Address
         <input class="block rounded bg-grey-lightest p-2 mt-2 w-full" type="email" name="email" value="{{ email }}"
           required />
       </label>
 
-      <label class="m-4 p-2 block">
+      <label class="p-2 block">
         Password
         <input class="block rounded bg-grey-lightest p-2 mt-2 w-full" type="password" name="password" required />
       </label>
 
-      <label class="m-4 p-2 block">
+      <label class="p-2 block">
         Confirm Password
         <input class="block rounded bg-grey-lightest p-2 mt-2 w-full" type="password" name="passwordConfirm" required />
       </label>

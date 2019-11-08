@@ -15,7 +15,7 @@
     <div class="mx-auto h-16 p-4 flex items-center justify-between" style="width: 1000px">
       <h2 class="mt-8 ml-8 pl-2 pr-2 pt-4 pb-4 uppercase bg-red-dark border border-white">Your Account</h2>
       <div class="mt-8">
-        Signed in as {{ user.name }} ({{ user.email }})
+        Signed in as {{ user.userName }} ({{ user.email }})
         <a href="/sign-out" class="text-white bg-red-dark border border-white rounded p-2 no-underline hover:bg-green-darkest ml-4">
           Sign Out
         </a>
@@ -27,7 +27,7 @@
   </header>
 
   <main class="h-screen flex flex-col items-center justify-center">
-    <form class="mx-auto m-4 shadow-lg items-center justify-center rounded-lg overflow-hidden w-2/5 bg-red" method="POST"
+    <form class="mx-auto m-4 mt-16 shadow-lg items-center justify-center rounded-lg overflow-hidden w-2/5 bg-red" method="POST"
       action="/edit-account">
 
       {{#if errorMessage}}
@@ -37,6 +37,12 @@
       <label class="m-4 block text-white">
         Update Name
         <input class="block rounded bg-grey-lightest p-2 mt-2 w-full" type="text" name="name" value="{{ user.name }}"
+          required />
+      </label>
+
+      <label class="m-4 block text-white">
+        Update userName
+        <input class="block rounded bg-grey-lightest p-2 mt-2 w-full" type="text" name="userName" value="{{ user.userName }}"
           required />
       </label>
 

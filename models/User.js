@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  userName: {
+    type: String,
+    trim: true,
+  },
   email: {
     type: String,
     trim: true,
@@ -16,7 +20,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.index({
-  name: 1,
+  userName: 1,
   email: 1
 }, {
   unique: true
