@@ -130,6 +130,22 @@ describe('Status and content', () => {
     });
   });
 
+  describe ('The Chits page', () => {
+    it('status', done => {
+        request('http://localhost:9000/chits', (error, response, body) => {
+            expect(response.statusCode).to.equal(200);
+            done();
+        });
+    });
+
+   it('content', done => {
+      request('http://localhost:9000/chits' , (error, response, body) => {
+          expect(body).to.include("Your Chits");
+          done();
+      });
+    });
+  });
+
   describe ('Non existent page', () => {
       it('status', done => {
           request('http://localhost:9000/dave', (error, response, body) => {

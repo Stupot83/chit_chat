@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Chit Chat</title>
+
+  <!-- Tailwind.css is a CSS library. Read the docs here: -->
+  <!-- https://tailwindcss.com/docs/what-is-tailwind -->
+  <link rel="stylesheet" href="/tailwind.css" />
+</head>
+
+<body class="bg-black">
+  <header class="fixed pin-x pin-t bg-black text-white">
+    <div class="mx-auto h-16 p-4 flex items-center justify-between" style="width: 1000px">
+      <h2 class="mt-8 p-4 uppercase bg-green-dark border border-white">Chit Chat: Chits</h2>
+      <div class="mt-8">
+        Signed in as {{ user.name }} ({{ user.email }})
+        <a href="/sign-out" class="text-white bg-green-dark border border-white rounded-full p-2 no-underline hover:bg-green-darkest ml-4">
+          Sign Out
+        </a>
+        <a href="/user" class="text-white bg-green-dark border border-white rounded-full p-2 no-underline hover:bg-green-darkest ml-4">
+          Go Back
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="width: 1000px; height: auto" class="mx-auto mt-16 pt-4 flex flex-col justify-center ">
+
+      <section class="border border-grey-light border-l-0 border-r-0 border-b-0 mt-6 pt-6"></section>
+
+      <a href="/chits/new" class="w-1/4 mt-4 mb-4 ml-4 pt-4 pb-4 bg-green-dark shadow rounded-lg text-3xl text-white 
+        no-underline flex items-center justify-center text-center hover:bg-green-light">
+      Add Chit
+    </a>
+    
+    <section class="border border-grey-light border-l-0 border-r-0 border-b-0 mt-6 pt-6"></section>
+
+    <h2 class="ml-8 mr-8 text-center bg-green-lightest pt-4 pb-4 rounded-full">Your Chits</h2>
+
+      {{#each chits}}
+      <a class="mt-8 mb-4 ml-10 mr-10 p-5 bg-white shadow rounded-lg no-underline" href="/chits/{{ id }}">
+        <p class="text-blue underline font-bold text-xl mt-2 mb-6">
+            {{ title }}
+          </p>
+        <p class="text-black font-semibold text-xl mt-2 mb-6">
+          {{ text }}
+        </p>
+        <p class="text-blue font-semibold text-xl mt-2">
+            Posted By: {{ userName }}
+         </p>
+        <p class="text-purple text-xl mt-1">
+          First Posted: {{ postedAt }}
+        </p>
+        <p class="text-purple text-xl mt-1">
+          Last Updated : {{ ChangedAt }}
+        </p>
+      </a>
+      {{/each}}
+    </section>
+    <section class="border border-grey-light border-l-0 border-r-0 border-b-0 mt-6 pt-6"></section>
+  </main>
+</body>
+
+</html>

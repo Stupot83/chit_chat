@@ -4,6 +4,7 @@ const routes = new express.Router();
 const saltRounds = 10;
 const User = require('./models/User');
 const Following = require('./models/Following');
+const Chit = require('./models/Chit');
 const DataAccess = require('./dataAccess/dataAccess');
 
 routes.get('/', (req, res) => {
@@ -346,6 +347,67 @@ routes.get('/friends/:id/unfollow', (req, res, next) => {
 
     DataAccess.deleteOne(Following, unfollowSearchObject, res, next, () => {
       res.redirect('/friends');
+    });
+  });
+});
+
+routes.get('/chits', (req, res, next) => {
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+    var chitSearchObject = {
+      userId: req.cookies.userId
+    };
+
+    DataAccess.find(Chit, chitSearchObject, res, next, (chits) => {
+      res.render('chits.html', {
+        user: loggedInUser,
+        chits: chits
+      });
+    });
+  });
+});
+
+routes.get('/chits/new', (req, res, next) => {
+  var searchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, searchObject, res, next, (loggedInUser) => {
+
+    res.render('create-chit.html', {
+      user: loggedInUser
+    });
+  });
+});
+
+routes.post('/chits/new', (req, res, next) => {
+  var form = req.body;
+  var userId;
+  var userName;
+
+  var searchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, searchObject, res, next, (loggedInUser) => {
+    userId = loggedInUser._id;
+    userName = loggedInUser.name;
+
+    var chit = new Chit();
+    chit.title = form.title;
+    chit.text = form.text;
+    chit.userName = userName;
+    chit.userId = userId;
+
+    DataAccess.insertNew(chit, res, next, () => {
+      res.redirect('/chits');
+    }, err => {
+      res.render('create-chit.html', {
+        user: loggedInUser,
+      });
     });
   });
 });

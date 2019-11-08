@@ -19,43 +19,55 @@ describe('Navigating around the app', () => {
     cy.location("pathname").should("eq", "/user");
   });
 
-  it("Should be able to redirect to the members page", function() {
+  it("Should be able to redirect to the members page", () => {
     cy.visit("http://localhost:9000/members");
 
     cy.location("pathname").should("eq", "/members");
   });
 
-  it("Should be able to return to the user page", function() {
+  it("Should be able to return to the user page", () => {
     cy.contains('Go Back').click();
 
     cy.location("pathname").should("eq", "/user");
   });
 
-  it("Should be able to redirect to the friends page", function() {
+  it("Should be able to redirect to the friends page", () => {
     cy.visit("http://localhost:9000/friends");
 
     cy.location("pathname").should("eq", "/friends");
   });
 
-  it("Should be able to return to the user page", function() {
+  it("Should be able to return to the user page", () => {
     cy.contains('Go Back').click();
 
     cy.location("pathname").should("eq", "/user");
   });
 
-  it("Should be able to redirect to the account page", function() {
+  it("Should be able to redirect to the account page", () => {
     cy.visit("http://localhost:9000/edit-account");
 
     cy.location("pathname").should("eq", "/edit-account");
   });
 
-  it("Should be able to return to the user page", function() {
+  it("Should be able to return to the user page", () => {
     cy.contains('Go Back').click();
 
     cy.location("pathname").should("eq", "/user");
   });
 
-  it("Should be able to sign the user out", function() {
+  it("Should be able to redirect to the chits page", () => {
+    cy.visit("http://localhost:9000/chits");
+
+    cy.location("pathname").should("eq", "/chits");
+  });
+
+  it("Should be able to return to the user page", () => {
+    cy.contains('Go Back').click();
+
+    cy.location("pathname").should("eq", "/user");
+  });
+
+  it("Should be able to sign the user out", () => {
     cy.contains('Sign Out').click();
 
     cy.location("pathname").should("eq", "/sign-in");
