@@ -170,8 +170,29 @@ routes.get('/delete-account', (req, res, next) => {
   };
 
   DataAccess.deleteOne(User, userSearchObject, res, next, () => {
-    res.clearCookie('userId');
-    res.redirect('/sign-in');
+
+    var chitSearchObject = {
+      userId: req.cookies.userId
+    };
+
+    DataAccess.deleteMany(Chit, chitSearchObject, res, next, () => {
+
+      var followingSearchObject = {
+        followingId: req.cookies.userId,
+      };
+
+      DataAccess.deleteMany(Following, followingSearchObject, res, next, () => {
+
+        var followedSearchObject = {
+          followerId: req.cookies.userId
+        };
+
+        DataAccess.deleteMany(Following, followedSearchObject, res, next, () => {
+          res.clearCookie('userId');
+          res.redirect('/sign-in');
+        });
+      });
+    });
   });
 });
 
