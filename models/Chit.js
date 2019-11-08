@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const chitSchema = new mongoose.Schema({
 
+  name: {
+    type: String,
+    trim: true
+  },
   userName: {
     type: String,
     trim: true
@@ -29,7 +33,8 @@ const chitSchema = new mongoose.Schema({
 });
 
 chitSchema.index({
-  createdAt: 1
+  userName: 1,
+  createdAt: 1,
 }, {
   unique: true
 });

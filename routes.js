@@ -391,6 +391,7 @@ routes.get('/chits/new', (req, res, next) => {
 routes.post('/chits/new', (req, res, next) => {
   var form = req.body;
   var userId;
+  var name;
   var userName;
 
   var searchObject = {
@@ -400,11 +401,13 @@ routes.post('/chits/new', (req, res, next) => {
   DataAccess.findOne(User, searchObject, res, next, (loggedInUser) => {
     userId = loggedInUser._id;
     name = loggedInUser.name;
+    userName = loggedInUser.userName;
 
     var chit = new Chit();
     chit.title = form.title;
     chit.text = form.text;
     chit.name = name;
+    chit.userName = userName;
     chit.userId = userId;
 
     DataAccess.insertNew(chit, res, next, () => {
@@ -412,6 +415,66 @@ routes.post('/chits/new', (req, res, next) => {
     }, err => {
       res.render('create-chit.html', {
         user: loggedInUser,
+      });
+    });
+  });
+});
+
+routes.get('/feed', (req, res, next) => {
+
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+
+    var followingSearchObject = {
+      followerId: req.cookies.userId
+    };
+
+    DataAccess.find(Following, followingSearchObject, res, next, (peopleUserIsFollowing) => {
+
+      var userIdsToFind = [];
+
+      peopleUserIsFollowing.forEach((person) => {
+        userIdsToFind.push(person.followingId);
+      });
+
+      userIdsToFind.push(req.cookies.userId);
+
+      var usersFollowingSearchObject = {
+        _id: {
+          $in: userIdsToFind,
+        }
+      };
+
+      DataAccess.find(User, usersFollowingSearchObject, res, next, (followedUsers) => {
+
+        var allUsersWithChits = [];
+
+        followedUsers.forEach((followedUser) => {
+          var allUserWithChits = {
+            chits: []
+          };
+
+          var usersFollowingChitsSearchObject = {
+            userId: followedUser._id
+          };
+
+          DataAccess.find(Chit, usersFollowingChitsSearchObject, res, next, (userChits) => {
+
+            userChits.forEach((userChit) => {
+              allUserWithChits.chits.push(userChit);
+            });
+
+            allUsersWithChits.push(allUserWithChits);
+
+              res.render('feed.html', {
+                user: loggedInUser,
+                allUsersWithChits: allUsersWithChits
+              });
+          });
+        });
       });
     });
   });

@@ -41,13 +41,16 @@
 
       {{#each chits}}
       <a class="mt-8 mb-4 ml-10 mr-10 p-5 bg-white shadow rounded-lg no-underline" href="/chits/{{ id }}">
+        <p class="text-green-dark font-bold text-xl mt-2 mb-6">
+          {{ userName }}:
+        </p>
         <p class="text-blue underline font-bold text-xl mt-2 mb-6">
             {{ title }}
           </p>
         <p class="text-black font-semibold text-xl mt-2 mb-6">
           {{ text }}
         </p>
-        <p class="text-blue font-semibold text-xl mt-2">
+        <p class="text-blue text-xl mt-2">
             Posted By: {{ userName }}
          </p>
         <p class="text-purple text-xl mt-1">
