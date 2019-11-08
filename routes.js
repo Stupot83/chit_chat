@@ -482,6 +482,17 @@ routes.post('/chits/:id', (req, res, next) => {
   });
 });
 
+routes.get('/chits/:id/delete', (req, res, next) => {
+
+  var searchObject = {
+    _id: req.params.id
+  };
+
+  DataAccess.deleteOne(Chit, searchObject, res, next, () => {
+    res.redirect('/chits');
+  });
+});
+
 routes.get('/feed', (req, res, next) => {
 
   var userSearchObject = {
