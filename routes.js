@@ -390,9 +390,9 @@ routes.get('/chits', (req, res, next) => {
     DataAccess.find(Chit, chitSearchObject, res, next, (chits) => {
 
       chits.sort((a, b) => {
-        var createdAtA = a.createdAt;
-        var createdAtB = b.createdAt;
-        return (createdAtB < createdAtA) ? -1 : (createdAtB > createdAtA) ? 1 : 0;
+        var updatedAtA = a.updatedAt;
+        var updatedAtB = b.updatedAt;
+        return (updatedAtB < updatedAtA) ? -1 : (updatedAtB > updatedAtA) ? 1 : 0;
       });
 
       res.render('chits.html', {
@@ -559,9 +559,9 @@ routes.get('/feed', (req, res, next) => {
             });
 
               arrayOfChits.sort((a, b) => {
-                var createdAtA = a.createdAt;
-                var createdAtB = b.createdAt;
-                return (createdAtB < createdAtA) ? -1 : (createdAtB > createdAtA) ? 1 : 0;
+                var updatedAtA = a.updatedAt;
+                var updatedAtB = b.updatedAt;
+                return (updatedAtB < updatedAtA) ? -1 : (updatedAtB > updatedAtA) ? 1 : 0;
               });
 
               res.render('feed.html', {
