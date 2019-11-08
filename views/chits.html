@@ -40,7 +40,9 @@
     <h2 class="ml-8 mr-8 text-center bg-green-lightest pt-4 pb-4 rounded-full">Your Chits</h2>
 
       {{#each chits}}
-      <a class="mt-8 mb-4 ml-10 mr-10 p-5 bg-white shadow rounded-lg no-underline" href="/chits/{{ id }}">
+      <div class="mt-8 mb-4 ml-10 mr-10 p-5 bg-white shadow rounded-lg no-underline">
+        <a class="w-1/6 float-right bg-green-dark shadow rounded-lg text-xl text-white 
+        no-underline flex items-center justify-center text-center hover:bg-green-light" href="/chits/{{ id }}">Edit</a>
         <p class="text-green-dark font-bold text-xl mt-2 mb-6">
           {{ userName }}:
         </p>
@@ -59,7 +61,7 @@
         <p class="text-purple text-xl mt-1">
           Last Updated : {{ ChangedAt }}
         </p>
-      </a>
+      </div>
       {{/each}}
     </section>
     <section class="border border-grey-light border-l-0 border-r-0 border-b-0 mt-6 pt-6"></section>

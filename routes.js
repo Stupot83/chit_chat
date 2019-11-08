@@ -429,6 +429,59 @@ routes.post('/chits/new', (req, res, next) => {
   });
 });
 
+routes.get('/chits/:id', (req, res, next) => {
+
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+
+    var chitSearchObject = {
+      _id: req.params.id
+    };
+
+    DataAccess.findOne(Chit, chitSearchObject, res, next, (chit) => {
+
+      res.render('edit-chit.html', {
+        user: loggedInUser,
+        chit: chit,
+      });
+    });
+  });
+});
+
+routes.post('/chits/:id', (req, res, next) => {
+  var form = req.body;
+
+  var userSearchObject = {
+    _id: req.cookies.userId
+  };
+
+  DataAccess.findOne(User, userSearchObject, res, next, (loggedInUser) => {
+
+    var searchObject = {
+      _id: req.params.id
+    };
+
+    DataAccess.findOneAndModify(Chit, searchObject, res, next, (chit) => {
+
+      chit.title = form.title;
+      chit.text = form.text;
+      chit.updatedAt = Date.now();
+
+      DataAccess.updateExisting(Chit, chit, res, next, () => {
+        res.redirect('/chits');
+      }, err => {
+        res.render('edit-chit.html', {
+          user: loggedInUser,
+          chit: chit
+        });
+      });
+    });
+  });
+});
+
 routes.get('/feed', (req, res, next) => {
 
   var userSearchObject = {
