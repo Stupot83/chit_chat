@@ -32,11 +32,10 @@
 
     <h2 class="ml-8 mr-8 text-center bg-blue-lightest pt-4 pb-4 rounded-full">Chit Chat Feed</h2>
 
-      {{#each allUsersWithChits}}
       <div class="mt-8 mb-4 ml-10 mr-10 p-2 bg-white shadow rounded-lg text-black no-underline">
         <section class="flex flex-wrap border border-grey-light border-l-0 border-r-0 border-b-0 mt-6 pt-6">
         </section>
-        {{#each chits}}
+        {{#each arrayOfChits}}
         <p class="text-green-dark font-bold text-xl mt-2 mb-6">
           {{ userName }}:
         </p>
@@ -59,7 +58,6 @@
         </section>
         {{/each}}
       </div>
-      {{/each}}
     </section>
     <section class="border border-grey-light border-l-0 border-r-0 border-b-0 mt-6 pt-6"></section>
   </main>

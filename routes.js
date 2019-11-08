@@ -367,6 +367,13 @@ routes.get('/chits', (req, res, next) => {
     };
 
     DataAccess.find(Chit, chitSearchObject, res, next, (chits) => {
+
+      chits.sort((a, b) => {
+        var createdAtA = a.createdAt;
+        var createdAtB = b.createdAt;
+        return (createdAtB < createdAtA) ? -1 : (createdAtB > createdAtA) ? 1 : 0;
+      });
+
       res.render('chits.html', {
         user: loggedInUser,
         chits: chits
@@ -381,6 +388,8 @@ routes.get('/chits/new', (req, res, next) => {
   };
 
   DataAccess.findOne(User, searchObject, res, next, (loggedInUser) => {
+
+
 
     res.render('create-chit.html', {
       user: loggedInUser
@@ -450,12 +459,9 @@ routes.get('/feed', (req, res, next) => {
 
       DataAccess.find(User, usersFollowingSearchObject, res, next, (followedUsers) => {
 
-        var allUsersWithChits = [];
+        var arrayOfChits = [];
 
         followedUsers.forEach((followedUser) => {
-          var allUserWithChits = {
-            chits: []
-          };
 
           var usersFollowingChitsSearchObject = {
             userId: followedUser._id
@@ -464,16 +470,20 @@ routes.get('/feed', (req, res, next) => {
           DataAccess.find(Chit, usersFollowingChitsSearchObject, res, next, (userChits) => {
 
             userChits.forEach((userChit) => {
-              allUserWithChits.chits.push(userChit);
+              arrayOfChits.push(userChit);
             });
 
-            allUsersWithChits.push(allUserWithChits);
+              arrayOfChits.sort((a, b) => {
+                var createdAtA = a.createdAt;
+                var createdAtB = b.createdAt;
+                return (createdAtB < createdAtA) ? -1 : (createdAtB > createdAtA) ? 1 : 0;
+              });
 
               res.render('feed.html', {
                 user: loggedInUser,
-                allUsersWithChits: allUsersWithChits
+                arrayOfChits: arrayOfChits
               });
-          });
+            });
         });
       });
     });
